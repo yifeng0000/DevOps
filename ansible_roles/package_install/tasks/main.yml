@@ -1,0 +1,30 @@
+---
+# tasks file for package_install
+
+---
+- name: Install multiple packages on Multiple OS
+  hosts: packages_install_hosts
+  become: yes
+
+  vars:
+    installation_methods:
+      - os: 'Ubuntu'
+        module: apt
+      - os: 'RedHat'
+        module: yum
+      - os: 'Fedora'
+        module: dnf
+      - os: 'Darwin'
+        module: homebrew
+      - os: 'SLES'
+        module: zypper
+      - os: 'openSUSE'
+        module: zypper
+
+  tasks:
+    - name: Install multiple packages
+      vars:
+        os_info: "{{ item }}"
+      include_tasks: install_packages.yml
+      with_items: "{{ installation_methods }}"
+      when: ansible_distribution == item.os or ansible_os_family == item.os
