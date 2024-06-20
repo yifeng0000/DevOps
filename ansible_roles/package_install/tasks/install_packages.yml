@@ -1,0 +1,4 @@
+- name: "Install packages on {{ os_info.os }}"
+  {{ os_info.module }}:
+    name: "{{ packages }}"
+    state: latest
